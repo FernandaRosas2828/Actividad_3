@@ -1,5 +1,5 @@
 const request = require('supertest');
-const app = require('../appp');
+const app = require('../app');
 const { calculateValue } = require('../lib/logic');
 
 describe('Suite de Pruebas de Calidad de Software', () => {
