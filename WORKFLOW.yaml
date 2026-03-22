@@ -3,7 +3,7 @@ name: K6 Load Test Pipeline
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   load-test:
