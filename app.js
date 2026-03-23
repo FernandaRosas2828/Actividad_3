@@ -20,3 +20,15 @@ app.use('/users', usersRouter)
 app.use('/items', itemsRouter)
 
 module.exports = app
+// Agregar ruta /health
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'ok' });
+});
+
+// Levantar servidor
+const PORT = 3000;
+app.listen(PORT, () => {
+  console.log(`Servidor corriendo en puerto ${PORT}`);
+});
+
+module.exports = app;
