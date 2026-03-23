@@ -12,11 +12,11 @@ jobs:
     steps:
       # Clonar repositorio
       - name: Clonar repositorio
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Instalar Node
       - name: Instalar Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 18
 
@@ -34,12 +34,12 @@ jobs:
       - name: Instalar K6
         run: |
           sudo apt update
-          sudo apt install -y gnupg software-properties-common
-          curl -s https://dl.k6.io/key.gpg | sudo apt-key add -
-          echo "deb https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
-          sudo apt update
-          sudo apt install k6
+          sudo apt install -y k6
 
-      # Ejecutar pruebas de carga
-      - name: Ejecutar pruebas K6
-        run: k6 run load-test.js
+      # 🚀 Ejecutar pruebas y enviar a Grafana
+      - name: Ejecutar pruebas K6 con Grafana
+        run: |
+          K6_PROMETHEUS_RW_SERVER_URL=${{ secrets.GRAFANA_URL }} \
+          K6_PROMETHEUS_RW_USERNAME=${{ secrets.GRAFANA_USER }} \
+          K6_PROMETHEUS_RW_PASSWORD=${{ secrets.GRAFANA_API_KEY }} \
+          k6 run --out experimental-prometheus-rw load-test.js
