@@ -14,13 +14,13 @@ jobs:
       - name: Clonar repositorio
         uses: actions/checkout@v4
 
-      # Instalar Node
+      # Instalar Node.js
       - name: Instalar Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 18
 
-      # Instalar dependencias (FIX ERROR ERESOLVE)
+      # Instalar dependencias
       - name: Instalar dependencias
         run: npm install --legacy-peer-deps
 
@@ -30,13 +30,18 @@ jobs:
           npm start &
           sleep 15
 
-      # Instalar K6
+      # 🔥 Instalar K6 (FIX UBUNTU 24)
       - name: Instalar K6
         run: |
-          sudo apt update
-          sudo apt install -y k6
+          sudo apt-get update
+          sudo apt-get install -y ca-certificates gnupg
+          sudo mkdir -p /etc/apt/keyrings
+          curl -fsSL https://dl.k6.io/key.gpg | sudo gpg --dearmor -o /etc/apt/keyrings/k6.gpg
+          echo "deb [signed-by=/etc/apt/keyrings/k6.gpg] https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
+          sudo apt-get update
+          sudo apt-get install -y k6
 
-      # 🚀 Ejecutar pruebas y enviar a Grafana
+      # 🚀 Ejecutar K6 + enviar a Grafana
       - name: Ejecutar pruebas K6 con Grafana
         run: |
           K6_PROMETHEUS_RW_SERVER_URL=${{ secrets.GRAFANA_URL }} \
