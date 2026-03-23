@@ -20,9 +20,9 @@ jobs:
         with:
           node-version: 18
 
-      # Instalar dependencias
+      # Instalar dependencias (FIX ERROR ERESOLVE)
       - name: Instalar dependencias
-        run: npm install
+        run: npm install --legacy-peer-deps
 
       # Levantar servidor
       - name: Levantar servidor
@@ -40,6 +40,6 @@ jobs:
           sudo apt update
           sudo apt install k6
 
-      # Ejecutar pruebas
-      - name: Ejecutar pruebas de carga K6
+      # Ejecutar pruebas de carga
+      - name: Ejecutar pruebas K6
         run: k6 run load-test.js
